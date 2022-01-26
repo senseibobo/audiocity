@@ -8,19 +8,112 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Wisp",
+"class": "BasicWisp",
+"language": "GDScript",
+"path": "res://Game/Wisps/BasicWisp.gd"
+}, {
+"base": "Node2D",
+"class": "Game",
+"language": "GDScript",
+"path": "res://Game/Game.gd"
+}, {
+"base": "Reference",
+"class": "Wisp",
+"language": "GDScript",
+"path": "res://Game/Wisps/Wisp.gd"
+} ]
+_global_script_class_icons={
+"BasicWisp": "",
+"Game": "",
+"Wisp": ""
+}
+
 [application]
 
 config/name="GGJ 2020"
 run/main_scene="res://Menu/Main.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+DefaultEnvironment="res://DefaultEnvironment.tscn"
+Tools="*res://Global/Tools.gd"
+ScreenShader="*res://Global/ScreenShader.tscn"
+Global="*res://Global/Global.gd"
+Transition="*res://Global/Transition.tscn"
+
 [display]
 
 window/size/width=1280
 window/size/height=720
-window/size/fullscreen=true
 window/stretch/mode="2d"
 window/stretch/aspect="keep"
+
+[importer_defaults]
+
+texture={
+"compress/bptc_ldr": 0,
+"compress/hdr_mode": 0,
+"compress/lossy_quality": 0.7,
+"compress/mode": 0,
+"compress/normal_map": 0,
+"detect_3d": false,
+"flags/anisotropic": false,
+"flags/filter": false,
+"flags/mipmaps": false,
+"flags/repeat": 0,
+"flags/srgb": 2,
+"process/HDR_as_SRGB": false,
+"process/fix_alpha_border": true,
+"process/invert_color": false,
+"process/normal_map_invert_y": false,
+"process/premult_alpha": false,
+"size_limit": 0,
+"stream": false,
+"svg/scale": 1.0
+}
+
+[input]
+
+black_hit={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+white_hit={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":2,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+move_up={
+"deadzone": 0.49,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":16777232,"unicode":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":87,"unicode":0,"echo":false,"script":null)
+ ]
+}
+move_down={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":83,"unicode":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":16777234,"unicode":0,"echo":false,"script":null)
+ ]
+}
+lane_1={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":49,"unicode":0,"echo":false,"script":null)
+ ]
+}
+lane_2={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":50,"unicode":0,"echo":false,"script":null)
+ ]
+}
+lane_3={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":51,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [physics]
 

@@ -22,12 +22,16 @@ func _process(delta):
 		
 
 func get_all_buttons(node: Control):
-	var b: Array
+	var b: Array = []
 	if is_instance_valid(node):
 		for child in node.get_children():
 			if child is Button:
 				b.append(child)
-			print(child)
 			b.append_array(get_all_buttons(child))
 	return b
 	
+
+
+func _on_Play_pressed():
+	Transition.transition()
+	var error = get_tree().change_scene_to(preload("res://Game/Game.tscn"))
