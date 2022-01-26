@@ -1,0 +1,49 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Menu/Themes/MainTheme.tres" type="Theme" id=1]
+[ext_resource path="res://Menu/Main.gd" type="Script" id=2]
+
+[sub_resource type="Environment" id=1]
+background_mode = 4
+glow_enabled = true
+glow_intensity = 0.58
+glow_strength = 0.76
+glow_blend_mode = 0
+glow_hdr_threshold = 0.0
+glow_hdr_luminance_cap = 14.44
+glow_bicubic_upscale = true
+glow_high_quality = true
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+margin_left = 612.0
+margin_top = 341.0
+margin_right = 668.0
+margin_bottom = 378.0
+
+[node name="Play" type="Button" parent="CenterContainer/VBoxContainer"]
+self_modulate = Color( 3, 3, 3, 1 )
+margin_right = 56.0
+margin_bottom = 37.0
+text = "Play"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 1 )
