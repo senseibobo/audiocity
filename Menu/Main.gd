@@ -35,3 +35,8 @@ func get_all_buttons(node: Control):
 func _on_Play_pressed():
 	Transition.transition()
 	var error = get_tree().change_scene_to(preload("res://Game/Game.tscn"))
+
+
+func _on_Create_pressed():
+	Transition.transition()
+	var error = get_tree().change_scene_to(preload("res://Editor/Editor.tscn"))

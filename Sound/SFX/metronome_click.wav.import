@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/metronome_click.wav-e040caefb91ab12262b99368b68e95ac.sample"
+
+[deps]
+
+source_file="res://Sound/SFX/metronome_click.wav"
+dest_files=[ "res://.import/metronome_click.wav-e040caefb91ab12262b99368b68e95ac.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

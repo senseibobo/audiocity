@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Textures/basic_white.png" type="Texture" id=1]
+
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -1.92383, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=2]
+curve = SubResource( 1 )
+
+[sub_resource type="ParticlesMaterial" id=3]
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 620.03
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+damping = 32.04
+scale = 0.27
+scale_curve = SubResource( 2 )
+color = Color( 1, 1, 1, 0.439216 )
+
+[node name="HitParticles" type="Particles2D"]
+emitting = false
+amount = 148
+lifetime = 0.25
+one_shot = true
+explosiveness = 0.91
+local_coords = false
+process_material = SubResource( 3 )
+texture = ExtResource( 1 )

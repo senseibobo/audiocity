@@ -2,8 +2,11 @@
 
 [sub_resource type="Environment" id=1]
 background_mode = 4
-glow_intensity = 1.1
-glow_strength = 0.78
+background_energy = 2.98
+background_canvas_max_layer = 1000
+glow_enabled = true
+glow_intensity = 0.39
+glow_strength = 0.82
 glow_blend_mode = 0
 glow_bicubic_upscale = true
 

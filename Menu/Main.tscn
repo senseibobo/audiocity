@@ -1,13 +1,44 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Menu/Themes/MainTheme.tres" type="Theme" id=1]
 [ext_resource path="res://Menu/Main.gd" type="Script" id=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform sampler2D noise;
+
+void fragment() {
+	vec4 c = texture(noise,UV+TIME/30.0);
+	COLOR = vec4(c.rgb/10.0,c.r);
+}"
+
+[sub_resource type="OpenSimplexNoise" id=3]
+
+[sub_resource type="NoiseTexture" id=4]
+width = 929
+height = 224
+seamless = true
+noise = SubResource( 3 )
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/noise = SubResource( 4 )
 
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 1 )
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Smoke" type="ColorRect" parent="."]
+material = SubResource( 2 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -20,18 +51,30 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
-margin_left = 612.0
-margin_top = 341.0
-margin_right = 668.0
-margin_bottom = 378.0
+margin_left = 599.0
+margin_top = 306.0
+margin_right = 680.0
+margin_bottom = 414.0
+custom_constants/separation = 34
 
 [node name="Play" type="Button" parent="CenterContainer/VBoxContainer"]
 self_modulate = Color( 3, 3, 3, 1 )
-margin_right = 56.0
+margin_right = 81.0
 margin_bottom = 37.0
 text = "Play"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Create" type="Button" parent="CenterContainer/VBoxContainer"]
+self_modulate = Color( 3, 3, 3, 1 )
+margin_top = 71.0
+margin_right = 81.0
+margin_bottom = 108.0
+text = "Create"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Play" to="." method="_on_Play_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Create" to="." method="_on_Create_pressed"]

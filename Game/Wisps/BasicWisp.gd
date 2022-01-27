@@ -2,4 +2,5 @@ extends Wisp
 class_name BasicWisp
 
 func _init():
-	texture = preload("res://icon.png")
+	white_texture = preload("res://Textures/basic_white.png")
+	black_texture = preload("res://Textures/basic_black.png")

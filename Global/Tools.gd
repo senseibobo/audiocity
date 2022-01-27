@@ -8,15 +8,11 @@ func tween(object,property,from,to,duration,tw1 = Tween.TRANS_LINEAR,tw2 = Tween
 	var tween = Tween.new()
 	get_tree().current_scene.add_child(tween)
 	tween.connect("tween_all_completed",tween,"queue_free")
-	tween.connect("tween_all_completed",self,"tween_completed")
 	tween.interpolate_property(object,property,from,to,duration,tw1,tw2)
 	tween.start()
 	if physics:
 		tween.playback_process_mode = 2
 	return tween
-
-func tween_completed():
-	print("A")
 
 func timer(time,object = get_tree().current_scene) -> Timer:
 	var timer = Timer.new()
