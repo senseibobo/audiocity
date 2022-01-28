@@ -3,27 +3,28 @@
 [ext_resource path="res://Menu/Themes/MainTheme.tres" type="Theme" id=1]
 [ext_resource path="res://Menu/Main.gd" type="Script" id=2]
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="Shader" id=4]
 code = "shader_type canvas_item;
 
 uniform sampler2D noise;
 
 void fragment() {
-	vec4 c = texture(noise,UV+TIME/30.0);
-	COLOR = vec4(c.rgb/10.0,c.r);
+	vec4 c = texture(noise,UV+TIME/30.0+texture(noise,UV/1.8).r);
+	float x = (c.r-0.6)*5.0;
+	COLOR = vec4(vec3(x),c.r);
 }"
 
 [sub_resource type="OpenSimplexNoise" id=3]
 
-[sub_resource type="NoiseTexture" id=4]
-width = 929
-height = 224
+[sub_resource type="NoiseTexture" id=5]
+width = 1000
+height = 1
 seamless = true
 noise = SubResource( 3 )
 
 [sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
-shader_param/noise = SubResource( 4 )
+shader = SubResource( 4 )
+shader_param/noise = SubResource( 5 )
 
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0

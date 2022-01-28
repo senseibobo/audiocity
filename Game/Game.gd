@@ -1,67 +1,38 @@
 extends Node2D
 class_name Game
 
-const timing: float = 0.2
+signal game_started
 
-const default_beatmap: Dictionary = {
-	"wisps": [
-		{
-			"type": "basic",
-			"beat": "5",
-			"lane": "1",
-			"color": "black"
-		},
-		{
-			"type": "basic",
-			"beat": "6",
-			"lane": "2",
-			"color": "white"
-		},
-		{
-			"type": "basic",
-			"beat": "7",
-			"lane": "1",
-			"color": "black"
-		},
-		{
-			"type": "basic",
-			"beat": "8",
-			"lane": "0",
-			"color": "black"
-		},
-		{
-			"type": "basic",
-			"beat": "9",
-			"lane": "1",
-			"color": "white"
-		}
-	],
-	"music": preload("res://Sound/Music/sweden.ogg"),
-	"bpm": 176.0,
-	"beat_offset": 0.122
-}
+const timing: float = 0.12
 
 var bpm: float
-var speed: float = 400.0
+var speed: float = 1.0
+var note_spread: float = 600.0
 var time: float = 0.0
 var beat: float = 0.0
 var player_offset: float = 220.0
-var beat_offset: float = 0.0
+var time_offset: float = 0.0
 var started: bool = false
+var pos: float
 
 var loaded_wisps: Array
 var spawned_wisps: Array
 
 onready var music_player: AudioStreamPlayer = AudioStreamPlayer.new()
+onready var player = $Player
 
 
 
 func _ready():
+	load_beatmap("res://Beatmaps/sweden2.json")
 	_configure_player()
-	load_beatmap(default_beatmap)
 	_configure_music()
+	time_offset /= speed
 	yield(get_tree().create_timer(1.5,false),"timeout")
 	start_game()
+	while true:
+		yield(get_tree().create_timer(2.5,false),"timeout")
+		invert()
 
 
 func _process(delta):
@@ -71,56 +42,54 @@ func _process(delta):
 
 
 func start_game():
-	music_player.play()
-	for i in 4:
+	emit_signal("game_started")
+	for i in 10:
 		if loaded_wisps.size() > 0:
 			spawn_wisp(loaded_wisps[-1])
 			loaded_wisps.pop_back()
 		else:
 			break
 	started = true
-	
+	if time_offset >= 0:
+		music_player.play(time_offset)
+	else:
+		yield(get_tree().create_timer(-time_offset),"timeout")
+		music_player.play()
 
-func load_beatmap(beatmap: Dictionary):
-	#loaded_wisps = beatmap["wisps"] as Array
-	loaded_wisps = _debug_generate_wisps()
+func load_beatmap(beatmap_path: String):
+	var file = File.new()
+	file.open(beatmap_path, file.READ)
+	var beatmap = parse_json(file.get_as_text())
+	file.close()
+	loaded_wisps = beatmap["wisps"] as Array
 	loaded_wisps.invert()
-	bpm = beatmap["bpm"]
-	beat_offset = beatmap["beat_offset"]
-	music_player.stream = beatmap["music"]
-
-func _debug_generate_wisps():
-	var b = 6.0
-	var w = []
-	for i in range(500):
-		w.append({
-			"type": "basic",
-			"beat": b,
-			"lane": randi()%2,
-			"color": ["white","black"][randi()%2]
-		})
-		b+=[0.5,1.0][randi()%2]
-	return w
+	bpm = beatmap["start_bpm"]
+	time_offset = beatmap["time_offset"]
+	music_player.stream = load(beatmap["song_path"])
 	
 	
 func _configure_music():
 	add_child(music_player)
+	music_player.pitch_scale = speed
 	
 	
 func _configure_player():
 	$Player.game = self
-	$Player.global_position.x = player_offset-64.0
+	$Player.adjust_bpm(bpm*speed)
+	$Player.global_position.x = player_offset-84.0
 	
 	
 func spawn_wisp(wisp_dict: Dictionary):
-	var wisp: Wisp
-	match wisp_dict["type"]:
-		"basic": wisp = BasicWisp.new()
+	var type = [BasicWisp,HoldWisp][wisp_dict["type"]]
+	var wisp: Wisp = type.new()
 	wisp.game = self
-	wisp.beat = wisp_dict["beat"]
+	wisp.time = wisp_dict["time"]
 	wisp.lane = wisp_dict["lane"]
 	wisp.color = wisp_dict["color"]
+	if wisp is HoldWisp:
+		wisp.length = wisp_dict["length"]
 	spawned_wisps.append(wisp)
+	wisp.added()
 	
 	
 func hit(lane: int, color: String):
@@ -131,12 +100,12 @@ func hit(lane: int, color: String):
 		var wisp: Wisp = spawned_wisps[i]
 		i+=1
 		if wisp.lane != lane or wisp.color != color: continue
-		var difference = wisp.beat - beat
+		var difference = (wisp.time - time)/speed
 		if difference < nearest_difference:
 			nearest = wisp
 			nearest_difference = difference
 	if nearest_difference < timing:
-		judge_wisp(nearest, "good")
+		nearest.hit()
 		return true
 	return false
 	
@@ -150,13 +119,14 @@ func judge_wisp(wisp: Wisp, judgement: String):
 		
 		
 func _sync_beat(delta):
-	time += delta
+	time += speed*delta
+	pos = time*note_spread
 	var old_beat = beat
-	beat = time * bpm / 60.0 + beat_offset
-	if int(old_beat) != int(beat) && int(beat)%2 == 0:
+	beat += speed*bpm/60.0*delta
+	if int(old_beat) != int(beat):
 		_on_beat()
 	for wisp in spawned_wisps:
-		wisp.on_process(beat)
+		wisp.on_process(delta)
 	
 	
 func _on_beat():
@@ -168,35 +138,38 @@ func _on_beat():
 func _draw():
 	_draw_support_lines()
 	_draw_wisps()
-	
-	
+
 func _draw_wisps():
 	for wisp in spawned_wisps:
-		wisp = wisp as Wisp
-		var p = get_beat_position(wisp.beat)
-		var texture: Texture = wisp.white_texture if wisp.color == "white" else wisp.black_texture
-		var size: Vector2 = texture.get_size()
-		draw_texture(texture, Vector2(p,300 + wisp.lane*120) - size/2)
+		wisp.draw()
 
+func get_time_position(time: float):
+	return (time-self.time)*note_spread + player_offset
+	
 func get_beat_position(b: float):
-	return (b-beat)*speed + player_offset
-	
-	
+	var spacing = bpm/60.0
+	return b*spacing*note_spread + player_offset
+
 func _draw_support_lines():
-	var pos = (fposmod(-beat,2.0)-2.0)*speed+player_offset
-	var pt: Vector2 = Vector2(pos,0)
+	var spacing = note_spread/bpm*60.0
+	var p = get_beat_position(0)
 	var points = []
-	while pt.x < 1280.0:
-		points.append(pt)
-		pt.y += 720.0
-		points.append(pt)
-		pt.x += speed*2.0
-		points.append(pt)
-		pt.y -= 720.0
-		points.append(pt)
-		pt.x += speed*2.0
-	draw_multiline(PoolVector2Array(points),Color.red,1000.0)
+	while p < pos + 1280.0:
+		var width = 0.5
+		var color = Color.gray
+		draw_line(Vector2(p-pos,0),Vector2(p-pos,720),color,width)
+		p += spacing*4.0
 	
-	
+
+func invert():
+	var new_color = Color(1,1,1,1)-$ColorRect.modulate
+	new_color.a = 1.0
+	Tools.tween(
+		$ColorRect,
+		"modulate",
+		$ColorRect.modulate,
+		new_color,
+		0.2
+	)
 	
 	

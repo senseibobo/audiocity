@@ -30,8 +30,7 @@ func get_all_buttons(node: Control):
 			b.append_array(get_all_buttons(child))
 	return b
 	
-
-
+	
 func _on_Play_pressed():
 	Transition.transition()
 	var error = get_tree().change_scene_to(preload("res://Game/Game.tscn"))

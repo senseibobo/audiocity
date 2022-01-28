@@ -1,9 +1,71 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Game/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Game/Game.gd" type="Script" id=2]
 
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform sampler2D noise;
+
+void fragment() {
+	vec4 c = texture(noise,UV/4.0+TIME/50.0+texture(noise,UV/25.0).r);
+	float x = max(min(float(int((c.r-0.5)*20.0))/2.0+0.5,0.95)-0.1,0.05)+0.1;
+	COLOR = vec4(vec3(x),c.r);
+}"
+
+[sub_resource type="OpenSimplexNoise" id=5]
+
+[sub_resource type="NoiseTexture" id=4]
+width = 1000
+height = 1
+seamless = true
+noise = SubResource( 5 )
+
+[sub_resource type="ShaderMaterial" id=6]
+shader = SubResource( 1 )
+shader_param/noise = SubResource( 4 )
+
+[sub_resource type="Shader" id=7]
+code = "shader_type canvas_item;
+
+void fragment() {
+	COLOR.rgb = vec3(1.0) - texture(SCREEN_TEXTURE,SCREEN_UV).rgb;
+}"
+
+[sub_resource type="ShaderMaterial" id=8]
+shader = SubResource( 7 )
+
 [node name="Game" type="Node2D"]
 script = ExtResource( 2 )
 
+[node name="Smoke" type="ColorRect" parent="."]
+show_behind_parent = true
+material = SubResource( 6 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 1280.0
+margin_bottom = 720.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+show_behind_parent = true
+margin_right = 1626.0
+margin_bottom = 791.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Player" parent="." instance=ExtResource( 1 )]
+
+[node name="Invert" type="ColorRect" parent="."]
+visible = false
+material = SubResource( 8 )
+margin_right = 1281.0
+margin_bottom = 723.0
+__meta__ = {
+"_edit_use_anchors_": false
+}

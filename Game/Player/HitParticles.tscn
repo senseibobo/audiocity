@@ -1,9 +1,16 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://Textures/basic_white.png" type="Texture" id=1]
+[ext_resource path="res://Textures/hitblackparticles.png" type="Texture" id=1]
+[ext_resource path="res://Game/Player/HitParticles.gd" type="Script" id=2]
+
+[sub_resource type="CanvasItemMaterial" id=4]
+particles_animation = true
+particles_anim_h_frames = 3
+particles_anim_v_frames = 1
+particles_anim_loop = true
 
 [sub_resource type="Curve" id=1]
-_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -1.92383, 0.0, 0, 0 ]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.777174, 0.996591 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -3.21016, 0.0, 0, 0 ]
 
 [sub_resource type="CurveTexture" id=2]
 curve = SubResource( 1 )
@@ -12,20 +19,52 @@ curve = SubResource( 1 )
 flag_disable_z = true
 spread = 180.0
 gravity = Vector3( 0, 0, 0 )
-initial_velocity = 620.03
+initial_velocity = 561.21
+initial_velocity_random = 0.45
+orbit_velocity = 1.83
+orbit_velocity_random = 0.67
+damping = 800.0
+scale_curve = SubResource( 2 )
+anim_speed = 2.54
+anim_speed_random = 1.0
+anim_offset = 1.0
+anim_offset_random = 1.0
+
+[sub_resource type="CanvasItemMaterial" id=6]
+particles_animation = true
+particles_anim_h_frames = 3
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="ParticlesMaterial" id=5]
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 98, 0 )
+initial_velocity = 1000.0
+initial_velocity_random = 0.53
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-damping = 32.04
-scale = 0.27
-scale_curve = SubResource( 2 )
-color = Color( 1, 1, 1, 0.439216 )
+anim_offset = 0.77
 
 [node name="HitParticles" type="Particles2D"]
+show_behind_parent = true
+material = SubResource( 4 )
 emitting = false
-amount = 148
-lifetime = 0.25
+amount = 39
+lifetime = 0.3
 one_shot = true
-explosiveness = 0.91
+explosiveness = 0.93
 local_coords = false
 process_material = SubResource( 3 )
+texture = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+material = SubResource( 6 )
+emitting = false
+amount = 75
+lifetime = 0.2
+one_shot = true
+explosiveness = 0.94
+process_material = SubResource( 5 )
 texture = ExtResource( 1 )
