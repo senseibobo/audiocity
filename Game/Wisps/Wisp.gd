@@ -11,7 +11,7 @@ func on_beat(beat: float): # triggered when beat hits
 	pass
 
 func on_process(delta: float): # triggered every frame
-	if self.time < game.time - game.timing:
+	if self.time < game.time - game.timing*game.speed:
 		game.judge_wisp(self,"bad")
 
 func hit():
@@ -20,8 +20,8 @@ func hit():
 func added():
 	pass
 
-func draw():
+func draw(modulate: Color = Color.white):
 	var p = game.get_time_position(time)
 	var texture: Texture = white_texture if color == "white" else black_texture
 	var size: Vector2 = texture.get_size()
-	game.draw_texture(texture, Vector2(p,300 + lane*120) - size/2)
+	game.draw_texture(texture, Vector2(p,300 + lane*120) - size/2, modulate)

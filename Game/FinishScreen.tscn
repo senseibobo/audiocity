@@ -1,0 +1,251 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Menu/Themes/MainTheme.tres" type="Theme" id=1]
+[ext_resource path="res://Menu/Themes/Fonts/Courgette-Regular.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Game/FinishScreen.gd" type="Script" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 118
+outline_size = 4
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 191
+outline_size = 8
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 74
+outline_size = 3
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 51
+outline_size = 3
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
+
+[node name="FinishScreen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false,
+"_edit_vertical_guides_": [ 296.0 ]
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GradeLabel" type="Label" parent="."]
+margin_left = 591.0
+margin_top = 256.0
+margin_right = 896.0
+margin_bottom = 405.0
+theme = ExtResource( 1 )
+custom_fonts/font = SubResource( 1 )
+text = "Grade"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Grade" type="Label" parent="."]
+margin_left = 1003.0
+margin_top = 220.0
+margin_right = 1108.0
+margin_bottom = 460.0
+theme = ExtResource( 1 )
+custom_fonts/font = SubResource( 2 )
+text = "S+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScoreLabel" type="Label" parent="."]
+margin_left = 180.0
+margin_top = 33.0
+margin_right = 352.0
+margin_bottom = 127.0
+theme = ExtResource( 1 )
+custom_fonts/font = SubResource( 3 )
+text = "Score"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScoreAmount" type="Label" parent="."]
+margin_left = 380.0
+margin_top = 33.0
+margin_right = 660.0
+margin_bottom = 127.0
+theme = ExtResource( 1 )
+custom_fonts/font = SubResource( 3 )
+text = "3579280"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HighscoreLabel" type="Label" parent="."]
+margin_left = 36.0
+margin_top = 105.0
+margin_right = 208.0
+margin_bottom = 199.0
+theme = ExtResource( 1 )
+custom_fonts/font = SubResource( 3 )
+text = "Highscore"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HighscoreAmount" type="Label" parent="."]
+margin_left = 380.0
+margin_top = 105.0
+margin_right = 660.0
+margin_bottom = 199.0
+theme = ExtResource( 1 )
+custom_fonts/font = SubResource( 3 )
+text = "3579280"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HitsLabel" type="Label" parent="."]
+margin_left = 208.0
+margin_top = 490.0
+margin_right = 302.0
+margin_bottom = 556.0
+theme = ExtResource( 1 )
+custom_fonts/font = SubResource( 4 )
+text = "Hits"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HitAmount" type="Label" parent="."]
+margin_left = 314.0
+margin_top = 489.0
+margin_right = 408.0
+margin_bottom = 555.0
+theme = ExtResource( 1 )
+custom_fonts/font = SubResource( 4 )
+text = "152"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MissesLabel" type="Label" parent="."]
+margin_left = 143.0
+margin_top = 540.0
+margin_right = 299.0
+margin_bottom = 604.0
+theme = ExtResource( 1 )
+custom_fonts/font = SubResource( 4 )
+text = "Misses"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MissAmount" type="Label" parent="."]
+margin_left = 311.0
+margin_top = 540.0
+margin_right = 467.0
+margin_bottom = 604.0
+theme = ExtResource( 1 )
+custom_fonts/font = SubResource( 4 )
+text = "0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AccuracyLabel" type="Label" parent="."]
+margin_left = 88.0
+margin_top = 584.0
+margin_right = 302.0
+margin_bottom = 648.0
+theme = ExtResource( 1 )
+custom_fonts/font = SubResource( 4 )
+text = "Accuracy"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Accuracy" type="Label" parent="."]
+margin_left = 311.0
+margin_top = 588.0
+margin_right = 525.0
+margin_bottom = 652.0
+theme = ExtResource( 1 )
+custom_fonts/font = SubResource( 4 )
+text = "100.00%"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MaxComboLabel" type="Label" parent="."]
+margin_left = 33.0
+margin_top = 632.0
+margin_right = 297.0
+margin_bottom = 696.0
+theme = ExtResource( 1 )
+custom_fonts/font = SubResource( 4 )
+text = "Max Combo"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MaxCombo" type="Label" parent="."]
+margin_left = 311.0
+margin_top = 636.0
+margin_right = 525.0
+margin_bottom = 700.0
+theme = ExtResource( 1 )
+custom_fonts/font = SubResource( 4 )
+text = "152"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BobLabel" type="Label" parent="."]
+margin_left = 124.0
+margin_top = 754.0
+margin_right = 424.0
+margin_bottom = 848.0
+theme = ExtResource( 1 )
+custom_fonts/font = SubResource( 3 )
+text = "Bob"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Back" type="Button" parent="."]
+margin_left = 1198.0
+margin_top = 666.0
+margin_right = 1258.0
+margin_bottom = 703.0
+theme = ExtResource( 1 )
+text = "Back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Retry" type="Button" parent="."]
+margin_left = 1110.0
+margin_top = 666.0
+margin_right = 1180.0
+margin_bottom = 703.0
+theme = ExtResource( 1 )
+text = "Retry"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="Back" to="." method="_on_Back_pressed"]
+[connection signal="pressed" from="Retry" to="." method="_on_Retry_pressed"]

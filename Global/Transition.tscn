@@ -56,7 +56,7 @@ tracks/0/keys = {
 }
 
 [node name="Transition" type="CanvasLayer"]
-layer = 20
+layer = 73
 script = ExtResource( 1 )
 
 [node name="ColorRect" type="ColorRect" parent="."]

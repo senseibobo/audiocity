@@ -12,7 +12,7 @@ enum TYPES {
 
 var note_spread: float = 400.0
 
-var chart_name: String = "Default"
+var chart_name: String = "My chart"
 var time_offset: float = 0.0
 var start_bpm: float = 128.0
 var song_path: String
@@ -44,6 +44,10 @@ var note_drag_time: float = 0.0
 var note_drag_y: float = 0.0
 var drag_change_lanes: bool = false
 
+
+func _ready():
+	if Global.selected_song != "":
+		load_beatmap(Global.selected_song)
 
 
 func _unhandled_input(event):
@@ -113,7 +117,17 @@ func load_beatmap(path: String):
 		$Panel/ChartInfo/ChooseSong/Button.disabled = true
 		$Panel/ChartInfo/SongPath.visible = false
 	for wisp in save_dict["wisps"]:
-		add_wisp(wisp["time"],wisp["lane"],wisp["color"],wisp["type"])
+		add_wisp_from_dict(wisp)
+
+func add_wisp_from_dict(wisp_dict: Dictionary):
+	var type = [BasicWisp,HoldWisp][wisp_dict["type"]]
+	var wisp: Wisp = type.new()
+	wisp.time = wisp_dict["time"]
+	wisp.lane = wisp_dict["lane"]
+	wisp.color = wisp_dict["color"]
+	if wisp is HoldWisp:
+		wisp.length = wisp_dict["length"]
+	add_created_wisp(wisp)
 
 func save():
 	regulate_wisps()
@@ -122,23 +136,38 @@ func save():
 	save_dict["start_bpm"] = bpm
 	save_dict["time_offset"] = time_offset
 	save_dict["song_path"] = song_path
+	save_dict["speed"] = speed
 	var save_wisps: Array = []
 	for wisp in wisps:
 		var type: int
 		if wisp is BasicWisp: type = 0
 		elif wisp is HoldWisp: type = 1
-		save_wisps.append({
+		var dict = {
 			"type" : type,
 			"time" : wisp.time,
 			"lane" : wisp.lane,
 			"color" : wisp.color
-		})
+		}
+		if wisp is HoldWisp:
+			dict["length"] = wisp.length
+		save_wisps.append(dict)
 	save_dict["wisps"] = save_wisps
 	var file: File = File.new()
 	var path = "res://Beatmaps/"+chart_name+".json"
 	file.open(path,File.WRITE)
 	file.store_string(to_json(save_dict))
 	file.close()
+	var start_modulate = Color(0.55,1.0,0.42,1.0)
+	var end_modulate = Color(0.55,1.0,0.42,0.0)
+	Tools.tween(
+		$Panel/EditorSettings/Label2,
+		"self_modulate",
+		start_modulate,
+		end_modulate,
+		4.0,
+		Tween.TRANS_SINE,
+		Tween.EASE_IN
+	)
 
 func add_black_wisp():
 	add_wisp(get_mouse_time(),get_mouse_lane(),"black",note_type)
@@ -348,10 +377,11 @@ func remove_wisp(wisp: Wisp):
 		wisps.erase(wisp)
 
 func get_mouse_time():
-	return (get_global_mouse_position().x + pos)/note_spread
+	return (get_global_mouse_position().x + pos)/note_spread*speed
 
 func get_mouse_lane():
-	return int(get_global_mouse_position().y > 360.0)
+	var y = get_global_mouse_position().y
+	return int(y > 360.0)
 
 
 func get_nearest_wisp(time: float = get_mouse_time(), lane: int = get_mouse_lane()) -> Wisp:
@@ -359,7 +389,7 @@ func get_nearest_wisp(time: float = get_mouse_time(), lane: int = get_mouse_lane
 	var nearest_diff: float = 10000000.0
 	for wisp in wisps:
 		wisp = wisp as Wisp
-		if wisp.lane != lane: continue
+		if wisp.lane != lane || abs(get_global_mouse_position().y-360.0) > 90.0: continue
 		var diff = abs(get_time_position(time) - get_time_position(wisp.time))
 		if diff > 30.0: continue
 		if diff < nearest_diff:
@@ -385,6 +415,8 @@ func add_wisp(
 	wisp.color = color
 	wisp.time = time
 	wisp.lane = lane
+	if wisp is HoldWisp:
+		wisp.length = 1.0
 	wisps.append(wisp)
 	regulate_wisps()
 	return wisp
@@ -458,6 +490,10 @@ func _draw():
 	_draw_beat_line()
 	if selecting: _draw_selection()
 
+func get_time_from_position(position: float):
+	return (position+pos)/note_spread
+
+
 func _draw_beat_line():
 	var pos = get_time_position(time)
 	draw_line(Vector2(pos,0),Vector2(pos,720),Color.green,3.0)
@@ -470,11 +506,17 @@ func _draw_selection():
 	draw_rect(Rect2(top_left,bottom_right-top_left),Color(0.2,0.3,0.8,0.4),true,1.0)
 
 func get_time_position(time: float):
-	return time*note_spread - pos
+	return (time*note_spread)/speed - pos
 	
 func _draw_wisps():
 	for wisp in wisps:
-		wisp.draw()
+		var mod = Color.white
+		if wisp in selected_wisps:
+			mod = Color.aqua
+		wisp.draw(mod)
+		
+
+		
 
 func _draw_cursor():
 	var pos = get_time_position(cursor_time)
@@ -485,7 +527,7 @@ func _draw_main_line():
 	draw_line(Vector2(pos,0),Vector2(pos,720),Color.red,6.0)
 	
 func _draw_support_lines():
-	var spacing = note_spread/bpm*60.0
+	var spacing = note_spread/bpm*60.0/speed
 	var p = get_beat_position(0)
 	var i = 0
 	var points = []
@@ -497,8 +539,7 @@ func _draw_support_lines():
 		p += spacing
 	
 func get_beat_position(b: float):
-	var spacing = bpm/60.0
-	return b*spacing*note_spread
+	return b*note_spread*bpm/60.0/speed
 
 func get_beat_from_position(x: float):
 	return beat + x/note_spread
@@ -569,20 +610,15 @@ func _on_Load_pressed():
 func _on_NoteColorOne_item_selected(index):
 	selected_wisps[0].color = ["white","black"][index]
 	show_wisp_info(selected_wisps[0])
-
-
+	
 func _on_NoteLane_item_selected(index):
 	selected_wisps[0].lane = index
 	show_wisp_info(selected_wisps[0])
 	
-
-
 func _on_NoteTime_value_changed(value):
 	selected_wisps[0].time = value
 	show_wisp_info(selected_wisps[0])
 	
-
-
 func _on_NoteType_item_selected(index):
 	var wisp_type = [BasicWisp, HoldWisp][index]
 	var new_wisp: Wisp = wisp_type.new()
@@ -590,6 +626,8 @@ func _on_NoteType_item_selected(index):
 	new_wisp.time = old_wisp.time
 	new_wisp.lane = old_wisp.lane
 	new_wisp.color = old_wisp.color
+	if new_wisp is HoldWisp:
+		new_wisp.length = beat_to_time(1)
 	delete_wisp(old_wisp)
 	add_created_wisp(new_wisp)
 	select_wisp(new_wisp)
@@ -603,12 +641,19 @@ func add_created_wisp(wisp: Wisp):
 	wisp.game = self
 	wisps.append(wisp)
 	regulate_wisps()
-
-
-
+	
 func _on_SnapAmount_value_changed(value):
 	snap_amount = value
-
-
+	
 func _on_NoteLength_value_changed(value):
 	selected_wisps[0].length = value
+
+
+func _on_BackToMain_pressed():
+	Transition.transition()
+	get_tree().change_scene_to(Global.main_scene)
+
+
+func _on_SongSpeed_value_changed(value):
+	speed = value
+	$MusicPlayer.pitch_scale = speed

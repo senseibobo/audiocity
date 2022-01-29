@@ -1,16 +1,25 @@
 extends Node
 
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+var selected_song: String
 
+const main_scene: PackedScene = preload("res://Menu/Main.tscn")
+const game_scene: PackedScene = preload("res://Game/Game.tscn")
+const editor_scene: PackedScene = preload("res://Editor/Editor.tscn")
+const finish_screen_scene: PackedScene = preload("res://Game/FinishScreen.tscn")
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+var highscore: float
+var score: float
+var hits: float
+var misses: float
+var accuracy: float
+var max_combo: float
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func save_highscore():
+	var file = File.new()
+	file.open(selected_song,file.READ_WRITE)
+	var chart_dict: Dictionary = parse_json(file.get_as_text())
+	file.seek(0)
+	chart_dict["highscore"] = highscore
+	file.store_string(JSON.print(chart_dict))
+	file.close()

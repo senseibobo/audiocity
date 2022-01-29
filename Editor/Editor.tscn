@@ -75,7 +75,7 @@ margin_left = 83.0
 margin_right = 269.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 186, 0 )
-text = "Default"
+text = "My chart"
 
 [node name="BPM" type="HBoxContainer" parent="Panel/ChartInfo"]
 margin_top = 46.0
@@ -162,6 +162,25 @@ hint_tooltip = "Offset the beat so that the song starts sooner or later to match
 text = "0.0"
 align = 2
 
+[node name="SongSpeed" type="HBoxContainer" parent="Panel/ChartInfo"]
+margin_top = 172.0
+margin_right = 269.0
+margin_bottom = 196.0
+
+[node name="Label" type="Label" parent="Panel/ChartInfo/SongSpeed"]
+margin_top = 5.0
+margin_right = 73.0
+margin_bottom = 19.0
+text = "Song Speed"
+
+[node name="SpinBox" type="SpinBox" parent="Panel/ChartInfo/SongSpeed"]
+margin_left = 77.0
+margin_right = 151.0
+margin_bottom = 24.0
+step = 0.01
+value = 1.0
+prefix = "x"
+
 [node name="NoteSettings" type="VBoxContainer" parent="Panel"]
 anchor_top = 0.333
 anchor_right = 1.0
@@ -197,7 +216,7 @@ margin_left = 89.0
 margin_right = 163.0
 margin_bottom = 24.0
 max_value = 1.0
-step = 0.05
+step = 0.025
 value = 0.25
 
 [node name="NoteType" type="HBoxContainer" parent="Panel/NoteSettings"]
@@ -304,16 +323,10 @@ margin_right = 268.0
 margin_bottom = 58.0
 text = "Metronome"
 
-[node name="NoteSounds" type="CheckButton" parent="Panel/EditorSettings"]
+[node name="SaveLoad" type="HBoxContainer" parent="Panel/EditorSettings"]
 margin_top = 62.0
 margin_right = 268.0
-margin_bottom = 102.0
-text = "Note Sounds"
-
-[node name="SaveLoad" type="HBoxContainer" parent="Panel/EditorSettings"]
-margin_top = 106.0
-margin_right = 268.0
-margin_bottom = 126.0
+margin_bottom = 82.0
 
 [node name="Save" type="Button" parent="Panel/EditorSettings/SaveLoad"]
 margin_right = 128.0
@@ -327,6 +340,20 @@ margin_right = 260.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 128, 0 )
 text = "Load Beatmap"
+
+[node name="Label2" type="Label" parent="Panel/EditorSettings"]
+self_modulate = Color( 0.545098, 1, 0.419608, 0 )
+margin_top = 86.0
+margin_right = 268.0
+margin_bottom = 100.0
+text = "Changes successfully saved!"
+align = 1
+
+[node name="Button" type="Button" parent="Panel/EditorSettings"]
+margin_top = 104.0
+margin_right = 268.0
+margin_bottom = 124.0
+text = "Back To Main Menu"
 
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
 
@@ -342,12 +369,13 @@ stream = ExtResource( 3 )
 [connection signal="text_changed" from="Panel/ChartInfo/BPM/LineEdit" to="." method="_on_BPM_text_changed"]
 [connection signal="pressed" from="Panel/ChartInfo/ChooseSong/Button" to="." method="_on_ChooseSong_pressed"]
 [connection signal="text_changed" from="Panel/ChartInfo/BeatOffset/LineEdit" to="." method="_on_BeatOffset_text_changed"]
+[connection signal="value_changed" from="Panel/ChartInfo/SongSpeed/SpinBox" to="." method="_on_SongSpeed_value_changed"]
 [connection signal="value_changed" from="Panel/NoteSettings/Snap/SpinBox" to="." method="_on_SnapAmount_value_changed"]
 [connection signal="item_selected" from="Panel/NoteSettings/NoteType/OptionButton" to="." method="_on_NoteType_item_selected"]
 [connection signal="item_selected" from="Panel/NoteSettings/NoteLane/OptionButton" to="." method="_on_NoteLane_item_selected"]
 [connection signal="item_selected" from="Panel/NoteSettings/NoteColor/OptionButton" to="." method="_on_NoteColorOne_item_selected"]
 [connection signal="value_changed" from="Panel/NoteSettings/NoteLength/SpinBox" to="." method="_on_NoteLength_value_changed"]
 [connection signal="toggled" from="Panel/EditorSettings/Metronome" to="." method="_on_Metronome_toggled"]
-[connection signal="toggled" from="Panel/EditorSettings/NoteSounds" to="." method="_on_NoteSounds_toggled"]
 [connection signal="pressed" from="Panel/EditorSettings/SaveLoad/Save" to="." method="save"]
 [connection signal="pressed" from="Panel/EditorSettings/SaveLoad/Load" to="." method="_on_Load_pressed"]
+[connection signal="pressed" from="Panel/EditorSettings/Button" to="." method="_on_BackToMain_pressed"]

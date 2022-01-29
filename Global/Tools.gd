@@ -4,6 +4,11 @@ var transition_scene: PackedScene = preload("res://Global/Transition.tscn")
 var transitioning: bool = false
 var background_color: Color = Color.black
 
+func _input(event):
+	if event.is_action("fullscreen"):
+		if event.is_pressed():
+			OS.window_fullscreen = !OS.window_fullscreen
+
 func tween(object,property,from,to,duration,tw1 = Tween.TRANS_LINEAR,tw2 = Tween.EASE_IN_OUT, physics = false) -> Tween:
 	var tween = Tween.new()
 	get_tree().current_scene.add_child(tween)
