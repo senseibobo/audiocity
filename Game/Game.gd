@@ -7,7 +7,7 @@ const timing: float = 0.12
 
 var bpm: float
 var speed: float = 1.0
-var note_spread: float = 1100.0
+var note_spread: float = 1200.0
 var time: float = 0.0
 var beat: float = 0.0
 var player_offset: float = 220.0

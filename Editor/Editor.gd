@@ -58,7 +58,7 @@ func _unhandled_input(event):
 	elif Input.is_action_just_released("editor_right_click"): release_right_click()
 	elif Input.is_action_just_pressed("editor_play"): toggle_playing()
 	elif Input.is_action_just_pressed("editor_reset"): reset()
-	elif Input.is_action_just_pressed("editor_add_note"): add_wisp()
+	elif Input.is_action_just_pressed("editor_add_note"): add_wisp(time)
 	elif Input.is_action_just_pressed("editor_add_black_note"): add_black_wisp()
 	elif Input.is_action_just_pressed("editor_add_white_note"): add_white_wisp()
 	elif Input.is_action_just_pressed("editor_slow_down"): change_speed(-0.05)
@@ -296,7 +296,7 @@ func hide_wisp_info():
 	
 func copy_wisps():
 	wisp_clipboard = selected_wisps.duplicate(true)
-	clipboard_time = time
+	clipboard_time = cursor_time
 
 func cut_wisps():
 	copy_wisps()
@@ -318,7 +318,7 @@ func paste_wisps():
 		var type: int
 		if wisp is BasicWisp: type = 0
 		elif wisp is HoldWisp: type = 1
-		new_wisps.append(add_wisp(wisp.time - clipboard_time + time, wisp.lane, wisp.color, type))
+		new_wisps.append(add_wisp(wisp.time - clipboard_time + cursor_time, wisp.lane, wisp.color, type))
 	select_wisps(new_wisps)
 
 func move_selected(dir: int):
@@ -646,7 +646,8 @@ func _on_SnapAmount_value_changed(value):
 	snap_amount = value
 	
 func _on_NoteLength_value_changed(value):
-	selected_wisps[0].length = value
+	if selected_wisps[0] is HoldWisp:
+		selected_wisps[0].length = value
 
 
 func _on_BackToMain_pressed():
