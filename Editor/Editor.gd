@@ -119,7 +119,7 @@ func load_beatmap(path: String):
 		else:
 			set(i,default[i])
 	$MusicPlayer.volume_db = volume
-	$MusicPlayer.stream = load(song_path)
+	$MusicPlayer.stream = play_external_file(song_path)
 	$MusicPlayer.pitch_scale = speed
 	$Panel/ChartInfo/ChartName/LineEdit.text = chart_name
 	$Panel/ChartInfo/BPM/LineEdit.text = str(bpm)
@@ -132,7 +132,19 @@ func load_beatmap(path: String):
 		$Panel/ChartInfo/SongPath.visible = false
 	for wisp in save_dict["wisps"]:
 		add_wisp_from_dict(wisp)
-
+		
+func play_external_file(path: String):
+	var extension = path.get_extension()
+	var stream: AudioStream
+	match extension:
+		"ogg": stream = AudioStreamOGGVorbis.new()
+		"mp3": stream = AudioStreamMP3.new()
+	var file = File.new()
+	file.open(path, File.READ)
+	stream.data = file.get_buffer(file.get_len())
+	file.close()
+	return stream
+	
 func add_wisp_from_dict(wisp_dict: Dictionary):
 	var type = [BasicWisp,HoldWisp][wisp_dict["type"]]
 	var wisp: Wisp = type.new()
@@ -164,7 +176,7 @@ func save():
 		save_wisps.append(dict)
 	save_dict["wisps"] = save_wisps
 	var file: File = File.new()
-	var path = "res://Beatmaps/"+chart_name+".json"
+	var path = "./Beatmaps/"+chart_name+".json"
 	file.open(path,File.WRITE)
 	file.store_string(to_json(save_dict))
 	file.close()
@@ -574,6 +586,7 @@ func _on_ChooseMode_item_selected(index: int):
 	
 func _on_ChooseSong_pressed():
 	$ChooseSongFile.show()
+	$ChooseSongFile.current_dir = $ChooseSongFile.current_dir + "/Sound/Music/"
 	
 func _on_ChooseSongFile_file_selected(path: String):
 	song_path = path

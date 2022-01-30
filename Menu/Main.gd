@@ -12,12 +12,12 @@ func _ready():
 		button.self_modulate = Color(3.0,3.0,3.0,1.0);
 	
 func load_songs():
-	var song_files = list_files_in_directory("res://Beatmaps")
+	var song_files = list_files_in_directory("./Beatmaps")
 	for path in song_files:
 		var song = song_scene.instance()
 		song.text = path.substr(0,path.length()-5)
 		$Songs/HBoxContainer/ScrollContainer/VBoxContainer.add_child(song)
-		song.connect("pressed",self,"song_selected",["res://Beatmaps/"+path])
+		song.connect("pressed",self,"song_selected",["./Beatmaps/"+path])
 
 func song_selected(path: String):
 	Global.selected_song = path

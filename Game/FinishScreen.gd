@@ -28,7 +28,7 @@ func _process(delta):
 	shown_score = lerp(shown_score,Global.score,speed*delta)
 	shown_hits = lerp(shown_hits,Global.hits,speed*delta)
 	shown_misses = lerp(shown_misses,Global.misses, speed*delta)
-	shown_accuracy = lerp(shown_accuracy, Global.accuracy*100.0, speed*10.0*delta)
+	shown_accuracy = lerp(shown_accuracy, Global.accuracy*100.0, speed*delta)
 	shown_highscore = lerp(shown_highscore, Global.highscore, speed*delta)
 	shown_combo = lerp(shown_combo, Global.max_combo, speed*delta)
 	$ScoreAmount.text = str(round(shown_score))

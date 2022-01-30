@@ -31,7 +31,7 @@ onready var player = $Player
 
 
 func _ready():
-	load_beatmap(Global.selected_song if Global.selected_song != "" else "res://Beatmaps/Speeden.json")
+	load_beatmap(Global.selected_song if Global.selected_song != "" else "./Beatmaps/Speeden.json")
 	_configure_player()
 	_configure_music()
 	time_offset /= speed
@@ -81,9 +81,21 @@ func load_beatmap(beatmap_path: String):
 		Global.highscore = beatmap["highscore"]
 	else:
 		Global.highscore = 0.0
-	music_player.stream = load(beatmap["song_path"])
+	music_player.stream = play_external_file(beatmap["song_path"])
 	music_player.volume_db = beatmap["volume"]
 	
+
+func play_external_file(path: String):
+	var extension = path.get_extension()
+	var stream: AudioStream
+	match extension:
+		"ogg": stream = AudioStreamOGGVorbis.new()
+		"mp3": stream = AudioStreamMP3.new()
+	var file = File.new()
+	file.open(path, File.READ)
+	stream.data = file.get_buffer(file.get_len())
+	file.close()
+	return stream
 	
 func _configure_music():
 	add_child(music_player)

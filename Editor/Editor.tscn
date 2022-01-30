@@ -21,6 +21,10 @@ margin_bottom = 689.0
 rect_min_size = Vector2( 186, 0 )
 window_title = "Open a File"
 mode = 0
+access = 2
+filters = PoolStringArray( "*.mp3", "*.ogg", "*.wav" )
+current_dir = "/Godot Games/GGJ 2022"
+current_path = "/Godot Games/GGJ 2022/"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -32,6 +36,9 @@ margin_right = 961.0
 margin_bottom = 692.0
 window_title = "Open a File"
 mode = 0
+access = 2
+current_dir = "/"
+current_path = "/"
 
 [node name="Panel" type="Panel" parent="."]
 anchor_left = 1.0
