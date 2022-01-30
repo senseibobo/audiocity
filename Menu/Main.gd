@@ -8,7 +8,10 @@ func _ready():
 	load_songs()
 	buttons = get_all_buttons(self)
 	for button in buttons:
-		button.rect_pivot_offset = button.rect_size / 2
+		if button is SongButton:
+			button.rect_pivot_offset = button.rect_size * Vector2(1.0,0.5) - Vector2(0,0)
+		else:
+			button.rect_pivot_offset = button.rect_size / 2
 		button.self_modulate = Color(3.0,3.0,3.0,1.0);
 	
 func load_songs():
@@ -72,13 +75,13 @@ func _on_Play_pressed():
 		$Songs,
 		"rect_position",
 		Vector2(1500.0,0.0),
-		Vector2(488,0.0),
+		Vector2(32,0.0),
 		0.5,
 		Tween.TRANS_CUBIC,
 		Tween.EASE_OUT
 	)
 	$Songs.visible = true
-	$Songs/HBoxContainer/ScrollContainer/Label.text = "Play song!"
+	$Songs/HBoxContainer/ScrollContainer/VBoxContainer/Label.text = "Play song!"
 	$Songs/HBoxContainer/ScrollContainer/VBoxContainer/Song.visible = false
 	yield(
 	Tools.tween(
@@ -106,13 +109,13 @@ func _on_Create_pressed():
 		$Songs,
 		"rect_position",
 		Vector2(1500.0,0.0),
-		Vector2(488,0.0),
+		Vector2(32,0.0),
 		0.5,
 		Tween.TRANS_CUBIC,
 		Tween.EASE_OUT
 	)
 	$Songs.visible = true
-	$Songs/HBoxContainer/ScrollContainer/Label.text = "Edit song chart"
+	$Songs/HBoxContainer/ScrollContainer/VBoxContainer/Label.text = "Edit song chart"
 	$Songs/HBoxContainer/ScrollContainer/VBoxContainer/Song.visible = true
 	yield(
 	Tools.tween(

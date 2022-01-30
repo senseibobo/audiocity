@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Menu/Themes/MainTheme.tres" type="Theme" id=1]
 [ext_resource path="res://Menu/Main.gd" type="Script" id=2]
 [ext_resource path="res://Game/Song.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Menu/Themes/Fonts/Courgette-Regular.ttf" type="DynamicFontData" id=4]
 
 [sub_resource type="Shader" id=4]
 code = "shader_type canvas_item;
@@ -33,22 +34,28 @@ code = "shader_type canvas_item;
 uniform sampler2D noise;
 
 void fragment() {
-	vec4 c = texture(noise,UV/4.0+TIME/50.0+texture(noise,UV/25.0).r);
-	float x = max(min(float(int((c.r-0.5)*20.0))/2.0+0.5,0.95)-0.1,0.05)+0.1;
+	vec4 c = texture(noise,UV/4.0+TIME/50.0+texture(noise,UV/2.0).r);
+	float x = c.r;
 	COLOR.rgb = vec3(x-0.52)*4.0;
 }"
 
 [sub_resource type="OpenSimplexNoise" id=6]
 
 [sub_resource type="NoiseTexture" id=7]
-width = 1000
-height = 1
+width = 305
+height = 57
 seamless = true
 noise = SubResource( 6 )
 
 [sub_resource type="ShaderMaterial" id=8]
 shader = SubResource( 1 )
 shader_param/noise = SubResource( 7 )
+
+[sub_resource type="DynamicFont" id=9]
+size = 109
+outline_size = 12
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 4 )
 
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
@@ -60,6 +67,7 @@ __meta__ = {
 }
 
 [node name="Smoke" type="ColorRect" parent="."]
+visible = false
 material = SubResource( 2 )
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -72,8 +80,8 @@ __meta__ = {
 material = SubResource( 8 )
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = 1.0
-margin_bottom = -1.0
+margin_right = 12.0
+margin_bottom = 15.0
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
@@ -87,16 +95,23 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
-margin_left = 599.0
-margin_top = 306.0
-margin_right = 680.0
-margin_bottom = 414.0
+margin_left = 380.0
+margin_top = 220.0
+margin_right = 899.0
+margin_bottom = 499.0
 custom_constants/separation = 34
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
+margin_right = 519.0
+margin_bottom = 137.0
+custom_fonts/font = SubResource( 9 )
+text = "AUDIOCITY"
 
 [node name="Play" type="Button" parent="CenterContainer/VBoxContainer"]
 self_modulate = Color( 3, 3, 3, 1 )
-margin_right = 81.0
-margin_bottom = 37.0
+margin_top = 171.0
+margin_right = 519.0
+margin_bottom = 208.0
 text = "Play"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -104,9 +119,9 @@ __meta__ = {
 
 [node name="Create" type="Button" parent="CenterContainer/VBoxContainer"]
 self_modulate = Color( 3, 3, 3, 1 )
-margin_top = 71.0
-margin_right = 81.0
-margin_bottom = 108.0
+margin_top = 242.0
+margin_right = 519.0
+margin_bottom = 279.0
 text = "Create"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -114,19 +129,18 @@ __meta__ = {
 
 [node name="Songs" type="VBoxContainer" parent="."]
 visible = false
-anchor_left = 0.381
-anchor_right = 0.617
+anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -63.68
+margin_left = 32.0
 margin_top = 32.0
-margin_right = 64.2399
+margin_right = -32.0
 margin_bottom = -29.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Songs"]
-margin_right = 430.0
+margin_right = 1216.0
 margin_bottom = 659.0
 size_flags_vertical = 3
 alignment = 1
@@ -137,38 +151,38 @@ margin_bottom = 659.0
 text = "Back"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Songs/HBoxContainer"]
-margin_left = 64.0
-margin_right = 430.0
+margin_left = 954.0
+margin_right = 1216.0
 margin_bottom = 659.0
 rect_clip_content = false
-size_flags_horizontal = 7
+size_flags_horizontal = 10
 size_flags_vertical = 3
+size_flags_stretch_ratio = 3.57
 scroll_horizontal_enabled = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="Songs/HBoxContainer/ScrollContainer"]
-margin_right = 366.0
-margin_bottom = 37.0
-size_flags_horizontal = 3
-text = "Songs"
-align = 1
-
 [node name="VBoxContainer" type="VBoxContainer" parent="Songs/HBoxContainer/ScrollContainer"]
-margin_left = 52.0
-margin_top = 605.0
-margin_right = 314.0
+margin_top = 550.0
+margin_right = 262.0
 margin_bottom = 659.0
 size_flags_horizontal = 6
 size_flags_vertical = 14
 custom_constants/separation = 18
 
+[node name="Label" type="Label" parent="Songs/HBoxContainer/ScrollContainer/VBoxContainer"]
+margin_right = 262.0
+margin_bottom = 37.0
+size_flags_horizontal = 3
+text = "Songs"
+align = 1
+
 [node name="Song" parent="Songs/HBoxContainer/ScrollContainer/VBoxContainer" instance=ExtResource( 3 )]
 margin_left = 0.0
-margin_top = 0.0
+margin_top = 55.0
 margin_right = 262.0
-margin_bottom = 54.0
+margin_bottom = 109.0
 rect_pivot_offset = Vector2( 210, 27 )
 size_flags_horizontal = 0
 text = "(+) New Song"

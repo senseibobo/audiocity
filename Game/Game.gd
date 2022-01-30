@@ -83,6 +83,7 @@ func load_beatmap(beatmap_path: String):
 		Global.highscore = 0.0
 	music_player.stream = play_external_file(beatmap["song_path"])
 	music_player.volume_db = beatmap["volume"]
+	$SongName.text = beatmap["chart_name"]
 	
 
 func play_external_file(path: String):

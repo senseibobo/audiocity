@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/kingcongakappa.ogg-d540eac356f5d0f95401d6cc8aee2699.oggstr"
+
+[deps]
+
+source_file="res://Sound/Music/kingcongakappa.ogg"
+dest_files=[ "res://.import/kingcongakappa.ogg-d540eac356f5d0f95401d6cc8aee2699.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
