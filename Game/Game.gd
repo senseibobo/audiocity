@@ -79,6 +79,8 @@ func load_beatmap(beatmap_path: String):
 		set(i,beatmap[i])
 	if beatmap.has("highscore"):
 		Global.highscore = beatmap["highscore"]
+	else:
+		Global.highscore = 0.0
 	music_player.stream = load(beatmap["song_path"])
 	music_player.volume_db = beatmap["volume"]
 	
@@ -148,10 +150,15 @@ func judge_wisp(wisp: Wisp, judgement: String):
 		if Global.score > Global.highscore:
 			Global.highscore = Global.score
 			Global.save_highscore()
-		yield(Tools.timer(2.0,self),"timeout")
+		yield(Tools.timer(1.0,self),"timeout")
+		Tools.tween(music_player,"volume_db",music_player.volume_db,-100,2.0)
+		Tools.tween(self,"modulate",modulate,Color(0,0,0,1),1.0)
+		yield(Tools.timer(1.5,self),"timeout")
 		end_game()
 func end_game():
 	Transition.transition()
+	yield(get_tree(),"idle_frame")
+	yield(get_tree(),"idle_frame")
 	get_tree().change_scene_to(Global.finish_screen_scene)
 	
 		
