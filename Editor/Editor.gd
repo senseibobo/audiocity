@@ -589,8 +589,14 @@ func _on_ChooseSong_pressed():
 	$ChooseSongFile.current_dir = $ChooseSongFile.current_dir + "/Sound/Music/"
 	
 func _on_ChooseSongFile_file_selected(path: String):
-	song_path = path
-	$MusicPlayer.stream = load(song_path)
+	var file_name = path.get_file()
+	var dir: Directory = Directory.new()
+	dir.open("./Sound/Music/")
+	if not dir.file_exists(file_name):
+		pass
+		dir.copy(path,"./Sound/Music/"+file_name)
+	song_path = "./Sound/Music/"+file_name
+	$MusicPlayer.stream = play_external_file(song_path)
 	$Panel/ChartInfo/SongPath.visible = false
 	$Panel/ChartInfo/ChooseSong/Button.text = "Song Chosen"
 	$Panel/ChartInfo/ChooseSong/Button.disabled = true
