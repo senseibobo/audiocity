@@ -118,7 +118,7 @@ script = ExtResource( 2 )
 position = Vector2( -1, 11 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 6 )
-frame = 3
+frame = 2
 playing = true
 
 [node name="SlideParticles" type="Particles2D" parent="."]

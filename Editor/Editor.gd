@@ -276,6 +276,7 @@ func select_wisps(wisps: Array):
 		selected_wisps.append_array(wisps)
 	else:
 		selected_wisps = wisps
+	show_wisp_info(selected_wisps[0])
 		
 func deselect_wisp(wisp: Wisp):
 	selected_wisps.erase(wisp)
