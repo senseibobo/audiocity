@@ -276,7 +276,8 @@ func select_wisps(wisps: Array):
 		selected_wisps.append_array(wisps)
 	else:
 		selected_wisps = wisps
-	show_wisp_info(selected_wisps[0])
+	if selected_wisps.size() > 0:
+		show_wisp_info(selected_wisps[0])
 		
 func deselect_wisp(wisp: Wisp):
 	selected_wisps.erase(wisp)
@@ -293,8 +294,7 @@ func show_wisp_info(wisp: Wisp):
 	var c: int = int(wisp.color == "black")
 	$Panel/NoteSettings/NoteColor/OptionButton.selected = c
 	$Panel/NoteSettings/NoteColor/OptionButton.disabled = false
-	if wisp is HoldWisp:
-		$Panel/NoteSettings/NoteLength/SpinBox.editable = true
+	$Panel/NoteSettings/NoteLength/SpinBox.editable = true
 
 func hide_wisp_info():
 	$Panel/NoteSettings/NoteType/OptionButton.selected = -1
