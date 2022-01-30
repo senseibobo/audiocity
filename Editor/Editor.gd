@@ -622,15 +622,18 @@ func _on_Load_pressed():
 
 
 func _on_NoteColorOne_item_selected(index):
-	selected_wisps[0].color = ["white","black"][index]
+	for wisp in selected_wisps:
+		wisp.color = ["white","black"][index]
 	show_wisp_info(selected_wisps[0])
 	
 func _on_NoteLane_item_selected(index):
-	selected_wisps[0].lane = index
+	for wisp in selected_wisps:
+		wisp.lane = index
 	show_wisp_info(selected_wisps[0])
 	
 func _on_NoteTime_value_changed(value):
-	selected_wisps[0].time = value
+	for wisp in selected_wisps:
+		wisp.time = value
 	show_wisp_info(selected_wisps[0])
 	
 func _on_NoteType_item_selected(index):
@@ -660,8 +663,9 @@ func _on_SnapAmount_value_changed(value):
 	snap_amount = value
 	
 func _on_NoteLength_value_changed(value):
-	if selected_wisps[0] is HoldWisp:
-		selected_wisps[0].length = value
+	for wisp in selected_wisps:
+		if wisp is HoldWisp:
+			wisp.length = value
 
 
 func _on_BackToMain_pressed():
