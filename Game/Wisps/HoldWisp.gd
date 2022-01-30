@@ -51,7 +51,7 @@ func draw(modulate: Color = Color.white):
 	if pressable:
 		game.draw_texture_rect(start_texture,Rect2(start_position,start_size),false,modulate)
 	if is_being_pressed:
-		mid_position.x = game.get_time_position(game.time) - 84.0
+		mid_position.x = game.get_time_position(game.time) - 52 + 4.0
 	mid_size.x = game.get_time_position(time+length) - mid_position.x
 	game.draw_texture_rect(mid_texture,Rect2(mid_position,mid_size),false,modulate)
 	game.draw_texture_rect(end_texture,Rect2(end_position,end_size),false,modulate)
@@ -75,7 +75,7 @@ func judge(judgement: String):
 
 func on_process(delta: float):
 	if is_being_pressed:
-		if game.time > time+length:
+		if game.time > time+length-0.04:
 			judge("good")
 		if game.player.lane != lane:
 			judge("bad")

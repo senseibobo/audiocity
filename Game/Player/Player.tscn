@@ -9,25 +9,25 @@
 [ext_resource path="res://Textures/holdblack.png" type="Texture" id=7]
 [ext_resource path="res://Textures/holdwhite.png" type="Texture" id=8]
 
-[sub_resource type="AtlasTexture" id=23]
+[sub_resource type="AtlasTexture" id=36]
 atlas = ExtResource( 1 )
-region = Rect2( 0, 0, 158, 86 )
+region = Rect2( 0, 0, 158, 96 )
 
-[sub_resource type="AtlasTexture" id=24]
+[sub_resource type="AtlasTexture" id=37]
 atlas = ExtResource( 1 )
-region = Rect2( 158, 0, 158, 86 )
+region = Rect2( 158, 0, 158, 96 )
 
-[sub_resource type="AtlasTexture" id=25]
+[sub_resource type="AtlasTexture" id=38]
 atlas = ExtResource( 1 )
-region = Rect2( 316, 0, 158, 86 )
+region = Rect2( 316, 0, 158, 96 )
 
-[sub_resource type="AtlasTexture" id=26]
+[sub_resource type="AtlasTexture" id=39]
 atlas = ExtResource( 1 )
-region = Rect2( 474, 0, 158, 86 )
+region = Rect2( 474, 0, 158, 96 )
 
-[sub_resource type="AtlasTexture" id=27]
+[sub_resource type="AtlasTexture" id=40]
 atlas = ExtResource( 1 )
-region = Rect2( 632, 0, 158, 86 )
+region = Rect2( 632, 0, 158, 96 )
 
 [sub_resource type="AtlasTexture" id=28]
 atlas = ExtResource( 5 )
@@ -63,7 +63,7 @@ region = Rect2( 474, 0, 158, 96 )
 
 [sub_resource type="SpriteFrames" id=6]
 animations = [ {
-"frames": [ SubResource( 23 ), SubResource( 24 ), SubResource( 25 ), SubResource( 26 ), SubResource( 27 ) ],
+"frames": [ SubResource( 36 ), SubResource( 37 ), SubResource( 38 ), SubResource( 39 ), SubResource( 40 ) ],
 "loop": true,
 "name": "default",
 "speed": 5.0
@@ -73,20 +73,20 @@ animations = [ {
 "name": "whiteattack",
 "speed": 7.0
 }, {
-"frames": [ SubResource( 32 ), SubResource( 33 ), SubResource( 34 ), SubResource( 35 ) ],
-"loop": true,
-"name": "blackattack",
-"speed": 7.0
-}, {
 "frames": [ ExtResource( 7 ) ],
 "loop": true,
 "name": "holdblack",
 "speed": 0.0
 }, {
+"frames": [ SubResource( 32 ), SubResource( 33 ), SubResource( 34 ), SubResource( 35 ) ],
+"loop": true,
+"name": "blackattack",
+"speed": 7.0
+}, {
 "frames": [ ExtResource( 8 ) ],
 "loop": true,
 "name": "holdwhite",
-"speed": 0.0
+"speed": 5.0
 } ]
 
 [sub_resource type="CanvasItemMaterial" id=21]
@@ -115,9 +115,10 @@ blend_mode = 4
 script = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( -1, 11 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 6 )
-animation = "holdblack"
+frame = 4
 playing = true
 
 [node name="SlideParticles" type="Particles2D" parent="."]

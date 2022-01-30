@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Firestorm.mp3-aa4e833c61f5f3e4a7a1128d7c79193b.mp3str"
+
+[deps]
+
+source_file="res://Sound/Music/Firestorm.mp3"
+dest_files=[ "res://.import/Firestorm.mp3-aa4e833c61f5f3e4a7a1128d7c79193b.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

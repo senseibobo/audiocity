@@ -55,7 +55,7 @@ func _process(delta):
 
 func start_game():
 	emit_signal("game_started")
-	for i in 10:
+	for i in 30:
 		if loaded_wisps.size() > 0:
 			spawn_wisp(loaded_wisps[-1])
 			loaded_wisps.pop_back()
@@ -75,12 +75,12 @@ func load_beatmap(beatmap_path: String):
 	file.close()
 	loaded_wisps = beatmap["wisps"] as Array
 	loaded_wisps.invert()
-	bpm = beatmap["start_bpm"]
-	time_offset = beatmap["time_offset"]
-	speed = beatmap["speed"]
+	for i in ["bpm","time_offset","speed"]:
+		set(i,beatmap[i])
 	if beatmap.has("highscore"):
 		Global.highscore = beatmap["highscore"]
 	music_player.stream = load(beatmap["song_path"])
+	music_player.volume_db = beatmap["volume"]
 	
 	
 func _configure_music():
@@ -200,7 +200,7 @@ func _draw_support_lines():
 	var points = []
 	while p < pos + 1280.0:
 		var width = 0.5
-		var color = Color.gray
+		var color = Color(0.5,0.5,0.5,0.2)
 		draw_line(Vector2(p-pos/speed,0),Vector2(p-pos/speed,720),color,width)
 		p += spacing
 	

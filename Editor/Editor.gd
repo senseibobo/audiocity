@@ -10,23 +10,32 @@ enum TYPES {
 	BASIC
 }
 
+const default = {
+	"chart_name": "My chart",
+	"time_offset": 0.0,
+	"bpm": 128.0,
+	"song_path": "res://Sounds/Music/sweden.ogg",
+	"volume": 0.0,
+	"speed": 1.0
+}
+
 var note_spread: float = 400.0
 
 var chart_name: String = "My chart"
 var time_offset: float = 0.0
-var start_bpm: float = 128.0
+var bpm: float = 128.0
 var song_path: String
+var volume: float = 0.0
+var speed: float = 1.0
 var wisps: Array
 
 var beat_speed: float = 200.0
 var pos: float = 0.0
-var bpm: float = 128.0
 var time: float
 var beat: float
 var dragging: bool = false
 var playing: bool = false
 var mode: int = MODES.ADD
-var speed: float = 1.0
 var metronome: bool = false
 var note_sounds: bool = false
 var note_type: int = 0
@@ -104,14 +113,19 @@ func load_beatmap(path: String):
 		return
 	var save_dict: Dictionary = parse_result.result
 	file.close()
-	chart_name = save_dict["name"]
-	bpm = save_dict["start_bpm"]
-	time_offset = save_dict["time_offset"]
-	song_path = save_dict["song_path"]
+	for i in default:
+		if save_dict.has(i):
+			set(i,save_dict[i])
+		else:
+			set(i,default[i])
+	$MusicPlayer.volume_db = volume
 	$MusicPlayer.stream = load(song_path)
+	$MusicPlayer.pitch_scale = speed
 	$Panel/ChartInfo/ChartName/LineEdit.text = chart_name
 	$Panel/ChartInfo/BPM/LineEdit.text = str(bpm)
 	$Panel/ChartInfo/BeatOffset/LineEdit.text = str(time_offset)
+	$Panel/ChartInfo/SongSpeed/SpinBox.value = speed
+	$Panel/ChartInfo/SongVolume/SpinBox.value = volume
 	if song_path != "":
 		$Panel/ChartInfo/ChooseSong/Button.text = "Song Chosen"
 		$Panel/ChartInfo/ChooseSong/Button.disabled = true
@@ -132,11 +146,8 @@ func add_wisp_from_dict(wisp_dict: Dictionary):
 func save():
 	regulate_wisps()
 	var save_dict: Dictionary = {}
-	save_dict["name"] = chart_name
-	save_dict["start_bpm"] = bpm
-	save_dict["time_offset"] = time_offset
-	save_dict["song_path"] = song_path
-	save_dict["speed"] = speed
+	for i in default:
+		save_dict[i] = get(i)
 	var save_wisps: Array = []
 	for wisp in wisps:
 		var type: int
@@ -318,7 +329,10 @@ func paste_wisps():
 		var type: int
 		if wisp is BasicWisp: type = 0
 		elif wisp is HoldWisp: type = 1
-		new_wisps.append(add_wisp(wisp.time - clipboard_time + cursor_time, wisp.lane, wisp.color, type))
+		var new = add_wisp(wisp.time - clipboard_time + cursor_time, wisp.lane, wisp.color, type)
+		if wisp is HoldWisp:
+			new.length = wisp.length
+		new_wisps.append(new)
 	select_wisps(new_wisps)
 
 func move_selected(dir: int):
@@ -658,3 +672,8 @@ func _on_BackToMain_pressed():
 func _on_SongSpeed_value_changed(value):
 	speed = value
 	$MusicPlayer.pitch_scale = speed
+
+
+func _on_SongVolume_value_changed(value):
+	volume = value
+	$MusicPlayer.volume_db = value

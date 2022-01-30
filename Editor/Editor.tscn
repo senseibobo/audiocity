@@ -181,6 +181,25 @@ step = 0.01
 value = 1.0
 prefix = "x"
 
+[node name="SongVolume" type="HBoxContainer" parent="Panel/ChartInfo"]
+margin_top = 200.0
+margin_right = 269.0
+margin_bottom = 224.0
+
+[node name="Label" type="Label" parent="Panel/ChartInfo/SongVolume"]
+margin_top = 5.0
+margin_right = 164.0
+margin_bottom = 19.0
+text = "Song Volume (0 = normal)"
+
+[node name="SpinBox" type="SpinBox" parent="Panel/ChartInfo/SongVolume"]
+margin_left = 168.0
+margin_right = 242.0
+margin_bottom = 24.0
+min_value = -100.0
+step = 0.01
+prefix = "x"
+
 [node name="NoteSettings" type="VBoxContainer" parent="Panel"]
 anchor_top = 0.333
 anchor_right = 1.0
@@ -370,6 +389,7 @@ stream = ExtResource( 3 )
 [connection signal="pressed" from="Panel/ChartInfo/ChooseSong/Button" to="." method="_on_ChooseSong_pressed"]
 [connection signal="text_changed" from="Panel/ChartInfo/BeatOffset/LineEdit" to="." method="_on_BeatOffset_text_changed"]
 [connection signal="value_changed" from="Panel/ChartInfo/SongSpeed/SpinBox" to="." method="_on_SongSpeed_value_changed"]
+[connection signal="value_changed" from="Panel/ChartInfo/SongVolume/SpinBox" to="." method="_on_SongVolume_value_changed"]
 [connection signal="value_changed" from="Panel/NoteSettings/Snap/SpinBox" to="." method="_on_SnapAmount_value_changed"]
 [connection signal="item_selected" from="Panel/NoteSettings/NoteType/OptionButton" to="." method="_on_NoteType_item_selected"]
 [connection signal="item_selected" from="Panel/NoteSettings/NoteLane/OptionButton" to="." method="_on_NoteLane_item_selected"]
